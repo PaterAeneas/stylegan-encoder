@@ -43,6 +43,7 @@ def main():
     parser.add_argument('--optimizer', default='ggt', help='Optimization algorithm used for optimizing dlatents')
 
     # Perceptual model params
+    parser.add_argument('--perc_url', default='https://drive.google.com/uc?id=1N2-m9qszOeVC9Tq77WxsLnuWwOedQiD2')
     parser.add_argument('--image_size', default=256, help='Size of images for perceptual model', type=int)
     parser.add_argument('--resnet_image_size', default=256, help='Size of images for the Resnet model', type=int)
     parser.add_argument('--lr', default=0.25, help='Learning rate for perceptual model', type=float)
@@ -121,7 +122,7 @@ def main():
 
     perc_model = None
     if (args.use_lpips_loss > 0.00000001):
-        with dnnlib.util.open_url('https://drive.google.com/uc?id=1N2-m9qszOeVC9Tq77WxsLnuWwOedQiD2', cache_dir=config.cache_dir) as f:
+        with dnnlib.util.open_url(args.perc_url, cache_dir=config.cache_dir) as f:
             perc_model =  pickle.load(f)
     perceptual_model = PerceptualModel(args, perc_model=perc_model, batch_size=args.batch_size)
     perceptual_model.build_perceptual_model(generator, discriminator_network)
